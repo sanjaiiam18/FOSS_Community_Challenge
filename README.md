@@ -1,17 +1,41 @@
 # FOSS_Community_Challenge
 
 # THE ROAD TO THE KINGDOM — Thirukkural 550 (குறள் 550)
+### An Interactive Cinematic Storytelling Experience
+
+---
+
+## 👥 Team Details — Team NEXUS
+
+| Role | Member Name | Register Number |
+| :--- | :--- | :--- |
+| **Team Leader** | **M SANJAI** | **7376241CS256** |
+| Team Member | **NAVANETH N D** | **7376241CS292** |
+| Team Member | **SACHIN S** | **7376251CS520** |
+
+---
+
+## 📜 Project Topic & Concept
+
+### **Topic**: Thirukkural 550 (அதிகாரம் 55: கொடுங்கோன்மை / The Scepter of Justice)
 
 > **கொலையிற் கொடியாரை வேந்தொறுத்தல்**  
 > **பைங்கூழ் களைகட் டதனொடு நேர்.**  
 > 
 > *A ruler removing those who seriously harm society is comparable to a farmer removing weeds so that healthy crops can flourish.*
 
-An interactive 2D cinematic storytelling experience built for the **FOSS Community Challenge**. The user follows a walking traveler who observes a farmer protecting a crop by excising a parasitic weed, then enters an ancient Tamil kingdom to see the sovereign ruler protecting peaceful society by removing harmful offenders. The audience discovers the profound organic analogy through visual narrative before the sacred Thirukkural is revealed.
+### **Central Philosophy**:
+Thiruvalluvar harmonizes the ethics of compassion (*Ahimsa*) with sovereign responsibility:
+- **Society $\leftrightarrow$ Crop (பைங்கூழ்)**: The innocent people who must be protected and nourished.
+- **Harmful Predators $\leftrightarrow$ Parasitic Weed (களை)**: Dangerous elements that choke and destroy life.
+- **Just Enforcement $\leftrightarrow$ Uprooting the Weed (களை கட்டதனொடு)**: Removing the threat is not cruelty or vengeance—it is the ultimate agrarian duty of preserving collective life.
+- **Equivalence (நேர்)**: Civic moral law and natural ecological law are identical.
+
+Rather than presenting a traditional text-heavy explanation or static slide deck, this project immerses the user into an **interactive 2D cinematic journey** where the traveler walks through both worlds, witnesses the actions, and discovers the universal truth before the sacred verse is revealed.
 
 ---
 
-## 🌟 Key Highlights & Features
+## 🌟 Architecture & Key Features
 
 1. **Digital Storybook Cover (First Page)**:
    - Minimal abstract landscape with warm ivory aesthetic.
@@ -47,13 +71,25 @@ An interactive 2D cinematic storytelling experience built for the **FOSS Communi
 
 ---
 
-## ⚡ Absolute Zero-Dependency Architecture
+## 📂 Project Files & Descriptions
 
-- **Strict Tech Stack**: Pure **HTML5**, **CSS3**, and **Vanilla JavaScript**.
-- **No Frameworks**: 0% React, Vue, Angular, Next.js.
-- **No 3D Engines**: 0% Three.js, Babylon.js, WebGL meshes (100% pure 2D parallax and scalable vector graphics).
-- **No Animation/CSS Libraries**: 0% GSAP, Framer Motion, Tailwind CSS, or Bootstrap.
-- **Standalone Execution**: Double-click `index.html` or open via `file://` protocol in any modern browser without local server requirements.
+| File Name | Purpose & Contents |
+| :--- | :--- |
+| **`index.html`** | The complete structural foundation. Contains the Prologue Storybook Cover, the 5-layer 2D parallax world, articulated SVG characters (Traveler, Farmer, Crops, Kingdom, Citizens, Offenders, Ruler, Guards), the Mirror Match-Cut modal, and the Final Kural 550 Revelation modal with scholar commentaries and interactive word cards. |
+| **`style.css`** | Pure CSS3 styling and animation engine. Implements fluid responsive design (100vw $\times$ 100vh), multi-plane parallax depth scrolling, skeletal keyframe walk cycles for actors, floating particle systems, cinematic Ken Burns effects, and high-contrast glassmorphism. |
+| **`script.js`** | The Vanilla JavaScript core engine. Powers camera smooth lerping, multi-modal input listeners (mouse wheel, touch drag, arrow keys, scrub step buttons), storyline chapter director, procedural Web Audio synthesizer, synchronized karaoke chanting, and perspective lens state management. |
+| **`kural_climax_bg.jpg`** | High-definition digital painting depicting an ancient Tamil kingdom and emerald green paddy fields bathed in morning sunrise light, serving as the fixed background for the final Kural revelation. |
+| **`README.md`** | Comprehensive project documentation, Team NEXUS details, topic explanation, file descriptions, controls, and instructions for the FOSS Community Challenge. |
+| **`.gitignore`** | Specifies files and temporary artifacts to be ignored by Git version control. |
+
+---
+
+## ⚡ Zero-Dependency Technology Stack
+
+- **Pure HTML5**: Semantic markup, embedded scalable SVG vectors, and accessibility features.
+- **Pure CSS3**: Keyframe animations, CSS variables, glassmorphism, flexbox/grid, and media queries.
+- **Pure Vanilla JavaScript**: Zero frameworks (No React, Vue, Next.js, Angular), zero animation libraries (No GSAP, Anime.js), zero 3D libraries (No Three.js), zero CSS frameworks (No Tailwind, Bootstrap).
+- **Standalone Execution**: Runs natively in any modern web browser via direct file opening (`file:///`) or static hosting.
 
 ---
 
@@ -68,30 +104,17 @@ An interactive 2D cinematic storytelling experience built for the **FOSS Communi
 
 ---
 
-## 📂 Project Structure
-
-```
-├── index.html            # Core HTML5 structure & SVG vector illustrations
-├── style.css             # 2D parallax layers, articulated animations & responsive styles
-├── script.js             # Camera lerp, story director, Web Audio API & event engine
-├── kural_climax_bg.jpg   # High-resolution scenic backdrop for the final revelation
-├── README.md             # Project documentation & FOSS challenge overview
-└── .gitignore            # Git ignore configuration
-```
-
----
-
 ## 🚀 Getting Started
 
-Simply clone the repository and open `index.html`:
+Clone the repository and open `index.html` in your browser:
 
 ```bash
 git clone https://github.com/sanjaiiam18/FOSS_Community_Challenge.git
 cd FOSS_Community_Challenge
 ```
 
-Double click `index.html` or open in any web browser (Chrome, Edge, Firefox, Safari).
+Double-click `index.html` or open with any modern web browser (Google Chrome, Microsoft Edge, Mozilla Firefox, Safari).
 
 ---
 
-© 2026 Crafted with devotion for Thirukkural 550 and the FOSS Community Challenge.
+© 2026 **Team NEXUS** — Crafted with devotion for Thirukkural 550 and the FOSS Community Challenge.
