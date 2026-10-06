@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>THE ROAD TO THE KINGDOM — Thirukkural 550</title>
+  <meta name="description" content="An interactive 2D cinematic storytelling experience for Thirukkural 550. Walk with a traveler to discover why removing what harms is an act of supreme care. Built with pure HTML, CSS, and Vanilla JavaScript.">
+
+  <!-- Classical Tamil & Cinematic Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Noto+Serif+Tamil:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="state-intro">
+
+  <!-- Ambient Sky Lighting Backdrop -->
+  <div id="sky-lighting" class="sky-lighting" aria-hidden="true"></div>
+
+  <!-- Ambient Film Overlays -->
+  <div class="film-grain" aria-hidden="true"></div>
+  <div class="film-vignette" aria-hidden="true"></div>
+
+  <!-- HUD / Header Navigation -->
+    <!-- ============================================================
+       MILESTONE 0: PREMIUM DIGITAL STORYBOOK COVER (FIRST PAGE)
+       ============================================================ -->
+  <section id="intro-screen" class="intro-screen" aria-label="Prologue: Thirukkural 550 Storybook Cover">
+    
+    <!-- Abstract Minimal Landscape Background (Field + Kingdom + Journey Path) -->
+    <div class="intro-canvas-container" aria-hidden="true">
+      
+      <!-- Warm Soft Sky Layer -->
+      <div class="intro-sky-layer"></div>
+      
+      <!-- Interactive Moving Sunbeam Spot (Follows pointer softly) -->
+      <div class="intro-sunbeam-spot" id="intro-sunbeam"></div>
+
+      <!-- Distant Drifting Clouds & Birds SVG -->
+      <div class="intro-parallax-clouds" id="intro-layer-clouds">
+        <svg class="intro-clouds-svg" viewBox="0 0 1440 360" preserveAspectRatio="none">
+          <!-- Gentle Translucent Drifting Clouds -->
+          <path class="intro-cloud c1" d="M 120 140 Q 180 90 260 110 Q 320 80 400 120 Q 460 150 360 180 Q 240 190 140 160 Z" />
+          <path class="intro-cloud c2" d="M 820 110 Q 900 65 1000 90 Q 1080 60 1160 100 Q 1230 140 1120 165 Q 980 175 840 140 Z" />
+          <!-- Distant Soaring Birds -->
+          <g class="intro-birds-group" stroke="#5c4a3b" stroke-width="1.8" fill="none" stroke-linecap="round">
+            <path class="intro-bird b1" d="M 1020 65 Q 1030 57 1040 65 Q 1050 57 1060 65" />
+            <path class="intro-bird b2" d="M 1080 82 Q 1088 75 1097 82 Q 1105 75 1113 82" />
+            <path class="intro-bird b3" d="M 980 95 Q 987 89 995 95 Q 1002 89 1010 95" />
+          </g>
+        </svg>
+      </div>
+
+      <!-- Connecting Journey Path SVG (Thin organic line from Field to Kingdom) -->
+      <div class="intro-journey-path" id="intro-layer-path">
+        <svg class="intro-path-svg" viewBox="0 0 1440 800" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="introPathGrad" x1="0%" y1="100%" x2="100%" y2="20%">
+              <stop offset="0%" stop-color="#2d6a4f" stop-opacity="0.25" />
+              <stop offset="45%" stop-color="#b8860b" stop-opacity="0.55" />
+              <stop offset="100%" stop-color="#d4af37" stop-opacity="0.85" />
+            </linearGradient>
+          </defs>
+          <!-- Organic curved road leading from lower-left field toward the distant kingdom -->
+          <path id="svg-journey-road" class="svg-journey-road" d="M 140 760 Q 380 640 560 510 T 1120 320" fill="none" stroke="url(#introPathGrad)" stroke-width="2.5" stroke-dasharray="8 6" />
+        </svg>
+      </div>
+
+      <!-- Distant Kingdom Silhouette (Upper-Right) -->
+      <div class="intro-kingdom-silhouette" id="intro-layer-kingdom">
+        <div class="kingdom-aurora"></div>
+        <svg class="intro-kingdom-svg" viewBox="0 0 540 320">
+          <g fill="#423429" id="intro-kingdom-shapes">
+            <!-- Gopuram Towers, Fort Walls & Spires -->
+            <path d="M 180 320 L 196 180 L 214 180 L 230 320 Z" />
+            <path d="M 235 320 L 258 110 L 268 70 L 278 70 L 288 110 L 312 320 Z" />
+            <polygon points="273,50 277,70 269,70" fill="#c59b27" />
+            <path d="M 318 320 L 334 195 L 350 195 L 366 320 Z" />
+            <path d="M 150 260 L 410 260 L 400 320 L 160 320 Z" />
+            <path d="M 370 230 L 420 230 L 420 320 L 370 320 Z" />
+          </g>
+        </svg>
+      </div>
+
+      <!-- Gentle Swaying Crop Blades (Lower-Left / Bottom) -->
+      <div class="intro-field-silhouette" id="intro-layer-field">
+        <svg class="intro-field-svg" viewBox="0 0 1440 280" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="cropBladeGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+              <stop offset="0%" stop-color="#142c1f" stop-opacity="0.9" />
+              <stop offset="60%" stop-color="#2d6a4f" stop-opacity="0.8" />
+              <stop offset="100%" stop-color="#40916c" stop-opacity="0.6" />
+            </linearGradient>
+          </defs>
+          <g id="intro-crop-blades" fill="none" stroke="url(#cropBladeGrad)" stroke-width="3" stroke-linecap="round">
+            <!-- Rice blades swaying in wind -->
+            <path class="intro-blade ib-1" d="M 40 280 Q 55 170 30 110" />
+            <path class="intro-blade ib-2" d="M 70 280 Q 95 150 125 90" stroke-width="3.5" />
+            <path class="intro-blade ib-3" d="M 105 280 Q 105 160 90 120" />
+            <path class="intro-blade ib-4" d="M 145 280 Q 170 180 190 130" />
+            <path class="intro-blade ib-5" d="M 195 280 Q 200 140 175 80" stroke-width="4" />
+            <path class="intro-blade ib-6" d="M 240 280 Q 270 170 300 120" />
+            <path class="intro-blade ib-7" d="M 290 280 Q 300 190 290 140" />
+            <path class="intro-blade ib-8" d="M 350 280 Q 380 170 430 110" stroke-width="3.5" />
+            <path class="intro-blade ib-9" d="M 400 280 Q 405 200 390 150" />
+            <path class="intro-blade ib-10" d="M 470 280 Q 500 180 540 130" />
+            <!-- Muted Golden Grain Head Accents -->
+            <circle cx="30" cy="108" r="3.5" fill="#c59b27" />
+            <circle cx="125" cy="88" r="4" fill="#c59b27" />
+            <circle cx="175" cy="78" r="4" fill="#c59b27" />
+            <circle cx="300" cy="118" r="3.5" fill="#c59b27" />
+            <circle cx="430" cy="108" r="4" fill="#c59b27" />
+          </g>
+        </svg>
+      </div>
+
+      <!-- Subtle Floating Dust Particles Canvas -->
+      <canvas id="canvas-intro-dust" class="canvas-intro-dust"></canvas>
+    </div>
+
+    <!-- Intro Content Layer (Centered, Editorial, High Breathing Room) -->
+    <div class="intro-content-wrapper">
+      
+      <!-- Top Subtle Label -->
+      <div class="intro-header-group">
+        <span class="intro-sub-label">A JOURNEY THROUGH ONE VERSE</span>
+        <h1 class="intro-tag">THIRUKKURAL · 550</h1>
+      </div>
+
+      <!-- Large Elegant Tamil Couplet (Free-Floating, Breathing Room) -->
+      <div class="intro-verse-container" id="intro-verse">
+        <p class="intro-verse-line line-1">கொலையிற் கொடியாரை வேந்தொறுத்தல்</p>
+        <p class="intro-verse-line line-2">பைங்கூழ் களைகட் டதனொடு நேர்.</p>
+      </div>
+
+      <!-- Short Interpretation & Central Metaphor -->
+      <div class="intro-interpretation-group" id="intro-interpretation">
+        <p class="intro-thesis">What protects a field can also protect a kingdom.</p>
+        <p class="intro-meaning">
+          A ruler protects society from what seriously harms it, just as a farmer removes weeds so that healthy crops can flourish.
+        </p>
+      </div>
+
+      <!-- Primary Action CTA Button -->
+      <div class="intro-cta-group" id="intro-cta">
+        <button id="btn-begin-journey" class="btn-begin-journey" aria-label="Begin the interactive journey">
+          <span class="btn-text">BEGIN THE JOURNEY</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <!-- Subtle Bottom Progress Indicator -->
+      <div class="intro-bottom-indicator">
+        <span class="ind-glyph">✦</span>
+        <span class="ind-text">01 — ENTER THE STORY</span>
+      </div>
+
+    </div>
+
+  </section>
+
+  <header class="hud-bar">
+    <div class="hud-left">
+      <span class="hud-gem"></span>
+      <button id="btn-hud-cover" class="hud-home-btn" title="Return to Story Cover"><span class="hud-title">THE ROAD TO THE KINGDOM</span></button>
+      <span class="hud-divider">/</span>
+      <span id="hud-chapter" class="hud-chapter">PROLOGUE : THE DAWN PATH</span>
+    </div>
+
+    <!-- Chapter Progress Scrubber -->
+    <nav class="hud-scrubber" aria-label="Story Chapters">
+      <button class="scrub-step active" data-target="0" title="01. The Dawn">
+        <span class="dot"></span><span class="lbl">Dawn</span>
+      </button>
+      <button class="scrub-step" data-target="1350" title="02. The Paddy Field">
+        <span class="dot"></span><span class="lbl">The Field</span>
+      </button>
+      <button class="scrub-step" data-target="2000" title="03. The Weed Excised">
+        <span class="dot"></span><span class="lbl">The Weed</span>
+      </button>
+      <button class="scrub-step" data-target="4400" title="04. Ancient Kingdom">
+        <span class="dot"></span><span class="lbl">Kingdom</span>
+      </button>
+      <button class="scrub-step" data-target="5200" title="05. Sovereign Justice">
+        <span class="dot"></span><span class="lbl">Justice</span>
+      </button>
+      <button class="scrub-step" data-target="6200" title="06. The Mirror & Kural">
+        <span class="dot"></span><span class="lbl">Kural 550</span>
+      </button>
+    </nav>
+
+    <div class="hud-right">
+      <button id="btn-audio" class="hud-pill" aria-label="Toggle procedural sound" title="Toggle Soundscape">
+        <span id="audio-icon" class="pill-icon">♪</span>
+        <span id="audio-label">SOUND : OFF</span>
+      </button>
+      <div class="kural-badge">
+        <span class="badge-tamil">குறள் 550</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Interactive Panoramic 2D World Viewport -->
+  <main id="world-viewport" class="world-viewport" tabindex="0" aria-label="Horizontal Panoramic World">
+    <div id="camera-world" class="camera-world">
+
+      <!-- ========================================================
+           LAYER 0: SUNRISE SKY & CELESTIAL BACKGROUND (0.08x)
+           ======================================================== -->
+      <div id="layer-sky" class="parallax-layer layer-sky" data-speed="0.08">
+        <svg class="sky-svg" viewBox="0 0 4000 900" preserveAspectRatio="none">
+          <defs>
+            <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fff8db" stop-opacity="0.95" />
+              <stop offset="35%" stop-color="#ffb852" stop-opacity="0.55" />
+              <stop offset="70%" stop-color="#f27d38" stop-opacity="0.22" />
+              <stop offset="100%" stop-color="#e85d42" stop-opacity="0" />
+            </radialGradient>
+            <linearGradient id="cloud-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#fff8ed" stop-opacity="0.4" />
+              <stop offset="100%" stop-color="#e3a77a" stop-opacity="0.08" />
+            </linearGradient>
+          </defs>
+          <circle id="celestial-sun" cx="950" cy="380" r="180" fill="url(#sun-glow)" />
+          <circle cx="950" cy="380" r="45" fill="#fffbe8" />
+
+          <path class="cloud-drift c1" d="M 300 280 Q 420 220 540 270 Q 640 210 740 260 Q 820 230 890 280 C 890 320 300 330 300 280 Z" fill="url(#cloud-grad)" />
+          <path class="cloud-drift c2" d="M 1200 220 Q 1340 160 1480 210 Q 1600 150 1720 210 Q 1820 180 1900 230 C 1900 270 1200 280 1200 220 Z" fill="url(#cloud-grad)" />
+          <path class="cloud-drift c3" d="M 2300 250 Q 2420 190 2560 240 Q 2680 180 2800 240 Q 2900 200 3020 260 C 3020 300 2300 310 2300 250 Z" fill="url(#cloud-grad)" />
+        </svg>
+
+        <canvas id="canvas-particles" class="canvas-particles"></canvas>
+      </div>
+
+      <!-- ========================================================
+           LAYER 1: DISTANT TAMIL HILLS & PALM GROVES (0.22x)
+           ======================================================== -->
+      <div id="layer-mountains" class="parallax-layer layer-mountains" data-speed="0.22">
+        <svg class="mountains-svg" viewBox="0 0 5500 500" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="mountain-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#4a3b32" stop-opacity="0.85" />
+              <stop offset="100%" stop-color="#241b17" stop-opacity="0.95" />
+            </linearGradient>
+            <linearGradient id="hill-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#2c3a28" stop-opacity="0.8" />
+              <stop offset="100%" stop-color="#152014" stop-opacity="0.95" />
+            </linearGradient>
+          </defs>
+          <path d="M 0 500 L 0 320 Q 280 240 600 280 T 1200 210 T 1800 260 T 2400 190 T 3100 240 T 3800 180 T 4500 230 T 5200 190 L 5500 220 L 5500 500 Z" fill="url(#mountain-grad)" />
+          <path d="M 0 500 L 0 380 Q 400 310 800 360 T 1600 320 T 2400 350 T 3200 310 T 4000 340 L 4150 250 L 4180 220 L 4210 250 L 4230 340 T 4800 330 T 5500 360 L 5500 500 Z" fill="url(#hill-grad)" />
+
+          <g class="distant-palms" fill="#1b2417" opacity="0.75">
+            <path d="M 450 350 L 452 300 Q 430 280 410 290 M 452 300 Q 450 270 452 265 M 452 300 Q 475 280 490 295" stroke="#1b2417" stroke-width="2.5" fill="none" />
+            <path d="M 1350 330 L 1352 280 Q 1330 260 1310 270 M 1352 280 Q 1350 250 1352 245 M 1352 280 Q 1375 260 1390 275" stroke="#1b2417" stroke-width="2.5" fill="none" />
+            <path d="M 2750 330 L 2752 285 Q 2730 265 2710 275 M 2752 285 Q 2750 255 2752 250 M 2752 285 Q 2775 265 2790 280" stroke="#1b2417" stroke-width="2.5" fill="none" />
+            <path d="M 3650 320 L 3652 270 Q 3630 250 3610 260 M 3652 270 Q 3650 240 3652 235 M 3652 270 Q 3675 250 3690 265" stroke="#1b2417" stroke-width="2.5" fill="none" />
+          </g>
+
+          <g class="soaring-birds" fill="none" stroke="#6d5843" stroke-width="2">
+            <path class="bird b1" d="M 680 140 Q 690 130 700 140 Q 710 130 720 140" />
+            <path class="bird b2" d="M 725 155 Q 735 145 745 155 Q 755 145 765 155" />
+            <path class="bird b3" d="M 1850 120 Q 1860 110 1870 120 Q 1880 110 1890 120" />
+            <path class="bird b4" d="M 3420 110 Q 3430 100 3440 110 Q 3450 100 3460 110" />
+          </g>
+        </svg>
+      </div>
+
+      <!-- ========================================================
+           LAYER 2: MIDGROUND ARCHITECTURE & RURAL ENVIRONMENT (0.55x)
+           ======================================================== -->
+      <div id="layer-midground" class="parallax-layer layer-midground" data-speed="0.55">
+        <svg class="midground-svg" viewBox="0 0 7600 650" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="hut-roof" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#8a5d3b" />
+              <stop offset="100%" stop-color="#4e331e" />
+            </linearGradient>
+            <linearGradient id="wall-stone" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#7a624d" />
+              <stop offset="100%" stop-color="#3b2d22" />
+            </linearGradient>
+          </defs>
+
+          <!-- Rural Zone: Traditional Tamil Thatched Hut & Well (x: 850 - 1400) -->
+          <g class="rural-homestead" transform="translate(850, 290)">
+            <polygon points="120,40 40,120 200,120" fill="url(#hut-roof)" />
+            <rect x="55" y="120" width="130" height="90" fill="#a47e5b" />
+            <rect x="95" y="150" width="45" height="60" fill="#382619" />
+            <ellipse cx="270" cy="190" rx="35" ry="14" fill="#5c4839" stroke="#3b2b20" stroke-width="3" />
+            <rect x="250" y="140" width="6" height="50" fill="#6d533d" />
+            <rect x="284" y="140" width="6" height="50" fill="#6d533d" />
+            <line x1="245" y1="145" x2="295" y2="145" stroke="#4a3727" stroke-width="4" />
+          </g>
+
+          <!-- Banyan Tree Grove between Farm and Highway (x: 2850 - 3300) -->
+          <g class="banyan-tree" transform="translate(2850, 180)">
+            <path d="M 80 400 Q 65 310 75 220 Q 95 140 160 120 Q 230 140 245 230 Q 255 310 240 400 Z" fill="#3a2b1f" />
+            <path d="M 110 220 Q 95 300 85 400" stroke="#2c2017" stroke-width="7" fill="none" />
+            <path d="M 215 220 Q 230 300 240 400" stroke="#2c2017" stroke-width="7" fill="none" />
+            <ellipse cx="160" cy="110" rx="140" ry="85" fill="#20331b" />
+            <ellipse cx="90" cy="140" rx="90" ry="60" fill="#1b2e17" />
+            <ellipse cx="230" cy="130" rx="100" ry="65" fill="#253c20" />
+          </g>
+
+          <!-- Kingdom Gateway Architecture (x: 3900 - 4600) -->
+          <g class="kingdom-outer-walls" transform="translate(3900, 110)">
+            <rect x="0" y="160" width="380" height="340" fill="url(#wall-stone)" />
+            <path d="M 0 160 L 0 135 L 45 135 L 45 160 L 90 160 L 90 135 L 135 135 L 135 160 L 180 160 L 180 135 L 225 135 L 225 160 L 270 160 L 270 135 L 315 135 L 315 160 L 360 160 L 360 135 L 380 135 L 380 160" fill="url(#wall-stone)" />
+            
+            <g id="kingdom-gate-structure" transform="translate(380, 20)">
+              <rect x="0" y="140" width="60" height="340" fill="#523f31" stroke="#36281e" stroke-width="3" />
+              <rect x="220" y="140" width="60" height="340" fill="#523f31" stroke="#36281e" stroke-width="3" />
+              <polygon points="-20,140 300,140 280,90 0,90" fill="#694f3c" />
+              <polygon points="10,90 270,90 250,50 30,50" fill="#583f2e" />
+              <polygon points="40,50 240,50 210,15 70,15" fill="#493223" />
+              <circle cx="140" cy="8" r="8" fill="#d4af37" />
+              <circle cx="95" cy="14" r="6" fill="#c49a2c" />
+              <circle cx="185" cy="14" r="6" fill="#c49a2c" />
+
+              <g id="gate-doors">
+                <rect id="gate-leaf-left" x="60" y="170" width="80" height="310" fill="#442a17" stroke="#22140a" stroke-width="4" />
+                <rect id="gate-leaf-right" x="140" y="170" width="80" height="310" fill="#3d2514" stroke="#22140a" stroke-width="4" />
+                <line x1="60" y1="230" x2="220" y2="230" stroke="#1f1813" stroke-width="5" />
+                <line x1="60" y1="360" x2="220" y2="360" stroke="#1f1813" stroke-width="5" />
+              </g>
+
+              <g class="royal-flags">
+                <line x1="-15" y1="140" x2="-15" y2="70" stroke="#d4af37" stroke-width="4" />
+                <path class="flag-banner" d="M -15 70 Q 20 80 50 72 L 50 100 Q 15 110 -15 98 Z" fill="#b82d23" />
+                <line x1="295" y1="140" x2="295" y2="70" stroke="#d4af37" stroke-width="4" />
+                <path class="flag-banner" d="M 295 70 Q 330 80 360 72 L 360 100 Q 325 110 295 98 Z" fill="#b82d23" />
+              </g>
+            </g>
+
+            <rect x="660" y="160" width="450" height="340" fill="url(#wall-stone)" />
+          </g>
+
+          <!-- Kingdom Interior: City Square Architecture & Stalls (x: 4850 - 6200) -->
+          <g class="kingdom-interior-architecture" transform="translate(4850, 180)">
+            <rect x="40" y="120" width="340" height="200" fill="#4e3c2e" opacity="0.9" />
+            <g fill="#614a38">
+              <rect x="60" y="160" width="22" height="160" />
+              <rect x="120" y="160" width="22" height="160" />
+              <rect x="180" y="160" width="22" height="160" />
+              <rect x="240" y="160" width="22" height="160" />
+              <rect x="300" y="160" width="22" height="160" />
+            </g>
+            <path d="M 460 220 Q 520 200 580 220 L 590 280 L 450 280 Z" fill="#c05c36" />
+            <path d="M 620 210 Q 690 195 760 210 L 770 270 L 610 270 Z" fill="#2d726b" />
+            <path d="M 800 220 Q 860 200 920 220 L 930 280 L 790 280 Z" fill="#d99b26" />
+          </g>
+        </svg>
+      </div>
+
+      <!-- ========================================================
+           LAYER 3: MAIN ACTION ROAD, CHARACTERS & LIVING SCENES (1.0x)
+           ======================================================== -->
+      <div id="layer-road" class="parallax-layer layer-road" data-speed="1.0">
+
+        <!-- Ground Surface -->
+        <div class="ground-surface">
+          <div class="ground-texture"></div>
+        </div>
+
+        <!-- ======================================================
+             ACTOR SCENE 1: THE PADDY FIELD & WEED (x: 1450 - 2800)
+             ====================================================== -->
+        <section id="scene-farm" class="scene-zone scene-farm" style="left: 1450px;">
+          
+          <div class="irrigation-channel">
+            <span class="water-shimmer"></span>
+          </div>
+
+          <!-- Lush Swaying Crops (பைங்கூழ்) Container -->
+          <div id="crops-container" class="crops-container" aria-label="Rows of green crop plants">
+            <!-- Dynamically populated with SVG crop plants -->
+          </div>
+
+          <!-- The Choking Parasitic Weed (களை) -->
+          <div id="weed-element" class="weed-element" tabindex="0" role="button" aria-label="A choking weed entwined around crops.">
+            <svg class="weed-svg" viewBox="0 0 140 180">
+              <defs>
+                <filter id="weed-glow">
+                  <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#8a1e28" flood-opacity="0.6" />
+                </filter>
+              </defs>
+              <g id="weed-body-group" class="weed-body" filter="url(#weed-glow)">
+                <path d="M 70 170 Q 55 130 45 105 Q 30 70 20 40" stroke="#3d1b1f" stroke-width="6" stroke-linecap="round" fill="none" />
+                <path d="M 70 170 Q 85 135 95 100 Q 115 65 125 35" stroke="#482226" stroke-width="6" stroke-linecap="round" fill="none" />
+                <path d="M 50 110 Q 75 90 70 50 Q 65 25 70 10" stroke="#2e1417" stroke-width="5" stroke-linecap="round" fill="none" />
+                
+                <polygon points="35,100 15,85 30,70" fill="#4a2125" />
+                <polygon points="85,95 110,80 90,65" fill="#421a1f" />
+                <polygon points="65,55 50,30 75,35" fill="#522429" />
+                <polygon points="25,50 10,30 28,25" fill="#381519" />
+                <polygon points="110,50 130,30 115,25" fill="#3a181c" />
+
+                <ellipse cx="68" cy="130" rx="14" ry="5" fill="#1f0a0d" />
+              </g>
+            </svg>
+            <div class="weed-interaction-hint">
+              <span class="hint-pulse"></span>
+              <span class="hint-text">The Weed (களை)</span>
+            </div>
+          </div>
+
+          <!-- The Diligent Farmer Silhouette -->
+          <div id="farmer-actor" class="farmer-actor">
+            <svg class="farmer-svg" viewBox="0 0 160 220">
+              <g id="farmer-body-group" class="farmer-posture-tending">
+                <ellipse cx="80" cy="210" rx="45" ry="12" fill="rgba(0,0,0,0.35)" />
+                <path class="f-leg-back" d="M 68 140 L 62 195 L 50 205" stroke="#251a14" stroke-width="12" stroke-linecap="round" fill="none" />
+                <path class="f-leg-front" d="M 88 140 L 92 195 L 105 205" stroke="#2b1e17" stroke-width="13" stroke-linecap="round" fill="none" />
+                <polygon class="f-veshti" points="55,115 105,115 115,160 48,160" fill="#69513e" />
+                
+                <path class="f-torso" d="M 65 65 Q 85 55 100 65 L 105 125 Q 80 130 60 120 Z" fill="#3b2b20" />
+                <path class="f-shoulder-cloth" d="M 60 70 Q 75 95 65 130 Q 55 130 50 95 Z" fill="#9e8570" />
+
+                <g id="farmer-arms">
+                  <path id="f-arm-reach" d="M 98 75 Q 120 110 135 150 Q 140 170 130 185" stroke="#3b2b20" stroke-width="9" stroke-linecap="round" fill="none" />
+                </g>
+
+                <g class="f-head" transform="translate(82, 38)">
+                  <circle cx="0" cy="0" r="16" fill="#302219" />
+                  <path d="M -16 -4 Q 0 -22 18 -6 Q 16 8 -2 6 Z" fill="#8b735d" />
+                </g>
+              </g>
+            </svg>
+            <div class="actor-title-tag">The Farmer (உழவர்)</div>
+          </div>
+
+          <canvas id="canvas-soil-fx" class="canvas-scene-fx"></canvas>
+        </section>
+
+        <!-- ======================================================
+             ACTOR SCENE 2: ANCIENT TAMIL KINGDOM (x: 4700 - 6400)
+             ====================================================== -->
+        <section id="scene-kingdom" class="scene-zone scene-kingdom" style="left: 4700px;">
+
+          <div class="market-square">
+            
+            <div class="market-stall stall-pottery" style="left: 60px;">
+              <svg viewBox="0 0 120 90" width="120" height="90">
+                <ellipse cx="40" cy="70" rx="18" ry="12" fill="#804a2d" />
+                <ellipse cx="75" cy="72" rx="14" ry="10" fill="#9c5f3b" />
+                <ellipse cx="100" cy="65" rx="16" ry="15" fill="#693d24" />
+              </svg>
+            </div>
+
+            <!-- Citizens (Society / பைங்கூழ் Analogy) -->
+            <div id="citizens-group" class="citizens-group">
+              <div class="citizen-actor c-merchant" style="left: 180px;">
+                <svg viewBox="0 0 80 160" width="70" height="140">
+                  <ellipse cx="40" cy="150" rx="25" ry="8" fill="rgba(0,0,0,0.3)" />
+                  <path d="M 30 50 Q 40 45 50 50 L 52 110 L 28 110 Z" fill="#4a3728" />
+                  <polygon points="25,100 55,100 58,145 22,145" fill="#a4805c" />
+                  <circle cx="40" cy="30" r="12" fill="#36261a" />
+                  <path d="M 28 26 Q 40 15 52 26" stroke="#c48a43" stroke-width="4" fill="none" />
+                </svg>
+                <span class="actor-mini-tag">Merchant</span>
+              </div>
+
+              <div class="citizen-actor c-citizen-1" style="left: 310px;">
+                <svg viewBox="0 0 80 160" width="70" height="140">
+                  <ellipse cx="40" cy="150" rx="25" ry="8" fill="rgba(0,0,0,0.3)" />
+                  <path d="M 30 50 Q 40 45 50 50 L 52 110 L 28 110 Z" fill="#2d4239" />
+                  <polygon points="25,100 55,100 58,145 22,145" fill="#758c7e" />
+                  <circle cx="40" cy="30" r="12" fill="#26332c" />
+                </svg>
+                <span class="actor-mini-tag">Citizen</span>
+              </div>
+
+              <div class="citizen-actor c-citizen-2" style="left: 420px;">
+                <svg viewBox="0 0 90 160" width="80" height="140">
+                  <ellipse cx="45" cy="150" rx="30" ry="8" fill="rgba(0,0,0,0.3)" />
+                  <path d="M 25 45 Q 40 38 52 45 L 56 125 L 20 125 Z" fill="#6d3d34" />
+                  <circle cx="38" cy="25" r="11" fill="#2b1c19" />
+                  <path d="M 60 90 Q 70 85 80 90 L 82 145 L 58 145 Z" fill="#8f6b43" />
+                  <circle cx="70" cy="78" r="8" fill="#2b1c19" />
+                </svg>
+                <span class="actor-mini-tag">Family</span>
+              </div>
+            </div>
+
+            <!-- The Harmful Offenders (களை / Weed Analogy) -->
+            <div id="offenders-group" class="offenders-group" style="left: 620px;">
+              <div class="offender-actor off-1">
+                <svg viewBox="0 0 100 180" width="90" height="160">
+                  <defs>
+                    <filter id="offender-shadow">
+                      <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#801c22" flood-opacity="0.7" />
+                    </filter>
+                  </defs>
+                  <g filter="url(#offender-shadow)">
+                    <ellipse cx="50" cy="170" rx="30" ry="8" fill="rgba(0,0,0,0.4)" />
+                    <path class="off-legs" d="M 35 110 L 25 165 M 65 110 L 78 165" stroke="#221113" stroke-width="12" stroke-linecap="round" fill="none" />
+                    <path class="off-torso" d="M 28 50 Q 50 42 72 50 L 75 115 L 25 115 Z" fill="#2e1417" />
+                    <path d="M 20 55 Q 10 105 18 140 Q 30 140 28 80 Z" fill="#4d1e23" />
+                    <path d="M 68 60 Q 95 75 105 90" stroke="#2e1417" stroke-width="10" stroke-linecap="round" fill="none" />
+                    <circle cx="50" cy="30" r="14" fill="#221113" />
+                  </g>
+                </svg>
+                <span class="offender-badge">Harmful Element (கொடியவர்)</span>
+              </div>
+
+              <div class="offender-actor off-2">
+                <svg viewBox="0 0 90 180" width="80" height="160">
+                  <ellipse cx="45" cy="170" rx="28" ry="8" fill="rgba(0,0,0,0.4)" />
+                  <path d="M 30 110 L 22 165 M 60 110 L 68 165" stroke="#221113" stroke-width="11" stroke-linecap="round" fill="none" />
+                  <path d="M 25 50 Q 45 42 65 50 L 68 115 L 22 115 Z" fill="#291215" />
+                  <circle cx="45" cy="30" r="13" fill="#221113" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- The Ruler & Royal Guards (வேந்து / King Intervention) -->
+            <div id="ruler-group" class="ruler-group" style="left: 920px;">
+              <div class="guard-actor g-front">
+                <svg viewBox="0 0 80 200" width="70" height="180">
+                  <ellipse cx="40" cy="190" rx="25" ry="8" fill="rgba(0,0,0,0.3)" />
+                  <path d="M 30 70 L 25 185 M 50 70 L 55 185" stroke="#30241b" stroke-width="10" stroke-linecap="round" fill="none" />
+                  <rect x="25" y="70" width="32" height="70" fill="#4d3b2c" />
+                  <line x1="68" y1="20" x2="68" y2="190" stroke="#78614d" stroke-width="4" />
+                  <polygon points="68,10 63,28 73,28" fill="#d4af37" />
+                  <circle cx="40" cy="48" r="13" fill="#2a1f17" />
+                  <polygon points="32,40 48,40 40,25" fill="#8c6a38" />
+                </svg>
+              </div>
+
+              <div id="ruler-actor" class="ruler-actor">
+                <svg viewBox="0 0 120 220" width="110" height="200">
+                  <defs>
+                    <radialGradient id="ruler-aura" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stop-color="#f5d77f" stop-opacity="0.3" />
+                      <stop offset="100%" stop-color="#f5d77f" stop-opacity="0" />
+                    </radialGradient>
+                  </defs>
+                  <circle cx="60" cy="100" r="80" fill="url(#ruler-aura)" />
+                  <ellipse cx="60" cy="210" rx="42" ry="10" fill="rgba(0,0,0,0.35)" />
+                  
+                  <path d="M 38 120 L 32 205 M 82 120 L 88 205" stroke="#3b2b1d" stroke-width="13" stroke-linecap="round" fill="none" />
+                  <polygon points="30,90 90,90 98,175 22,175" fill="#8c2e26" />
+                  <path d="M 34 50 Q 60 40 86 50 L 92 105 L 28 105 Z" fill="#5c201a" />
+                  <path d="M 32 50 Q 65 85 88 125" stroke="#d4af37" stroke-width="7" fill="none" />
+
+                  <g id="ruler-command-arm">
+                    <path id="ruler-arm-path" d="M 38 60 Q 15 75 5 80" stroke="#5c201a" stroke-width="10" stroke-linecap="round" fill="none" />
+                  </g>
+
+                  <circle cx="60" cy="30" r="15" fill="#332419" />
+                  <polygon points="46,24 74,24 68,5 60,12 52,5" fill="#d4af37" stroke="#9e7b1a" stroke-width="1.5" />
+                  <circle cx="60" cy="4" r="3" fill="#e8362a" />
+                </svg>
+                <div class="actor-title-tag ruler-tag">The Ruler (வேந்து)</div>
+              </div>
+
+              <div class="guard-actor g-back">
+                <svg viewBox="0 0 80 200" width="70" height="180">
+                  <ellipse cx="40" cy="190" rx="25" ry="8" fill="rgba(0,0,0,0.3)" />
+                  <path d="M 30 70 L 25 185 M 50 70 L 55 185" stroke="#30241b" stroke-width="10" stroke-linecap="round" fill="none" />
+                  <rect x="25" y="70" width="32" height="70" fill="#4d3b2c" />
+                  <line x1="12" y1="20" x2="12" y2="190" stroke="#78614d" stroke-width="4" />
+                  <polygon points="12,10 7,28 17,28" fill="#d4af37" />
+                  <circle cx="40" cy="48" r="13" fill="#2a1f17" />
+                  <polygon points="32,40 48,40 40,25" fill="#8c6a38" />
+                </svg>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ========================================================
+           LAYER 4: FOREGROUND ELEMENTS & WALKING TRAVELER (1.35x)
+           ======================================================== -->
+      <div id="layer-foreground" class="parallax-layer layer-foreground" data-speed="1.35">
+        <svg class="foreground-svg" viewBox="0 0 7600 200" preserveAspectRatio="none">
+          <g fill="#141a12" opacity="0.95">
+            <path class="fg-grass" d="M 120 200 Q 130 110 110 70 Q 140 120 145 200 Z" />
+            <path class="fg-grass" d="M 140 200 Q 165 95 190 60 Q 175 125 165 200 Z" />
+            <path class="fg-grass" d="M 520 200 Q 535 120 560 80 Q 545 135 540 200 Z" />
+            <path class="fg-grass" d="M 1120 200 Q 1105 105 1080 65 Q 1130 115 1145 200 Z" />
+            <path class="fg-grass" d="M 1740 200 Q 1765 110 1795 70 Q 1775 130 1760 200 Z" />
+            <path class="fg-grass" d="M 2420 200 Q 2435 95 2470 55 Q 2450 120 2440 200 Z" />
+            <path class="fg-grass" d="M 3240 200 Q 3215 115 3190 75 Q 3245 125 3260 200 Z" />
+            <path class="fg-grass" d="M 4320 200 Q 4345 110 4375 60 Q 4355 125 4340 200 Z" />
+            <path class="fg-grass" d="M 5480 200 Q 5505 100 5545 65 Q 5520 125 5505 200 Z" />
+            <path class="fg-grass" d="M 6480 200 Q 6465 110 6440 70 Q 6490 125 6505 200 Z" />
+          </g>
+        </svg>
+      </div>
+
+    </div>
+
+    <!-- ==========================================================
+         THE WALKING TRAVELER (ON-SCREEN ANCHORED HERO ACTOR)
+         ========================================================== -->
+    <div id="traveler-hero" class="traveler-hero" aria-label="The Traveler exploring the journey">
+      
+      <div id="walk-dust" class="walk-dust"></div>
+
+      <svg class="traveler-svg" viewBox="0 0 160 240">
+        <defs>
+          <radialGradient id="traveler-shadow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(0,0,0,0.5)" />
+            <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+          </radialGradient>
+        </defs>
+        
+        <ellipse id="traveler-shadow-el" cx="80" cy="232" rx="45" ry="10" fill="url(#traveler-shadow)" />
+
+        <g id="traveler-skeleton" class="traveler-idle">
+          <g id="t-arm-back" class="limb-arm-back">
+            <path d="M 75 75 L 60 120 L 50 155" stroke="#1f1814" stroke-width="9" stroke-linecap="round" fill="none" />
+          </g>
+
+          <g id="t-leg-back" class="limb-leg-back">
+            <path d="M 72 135 L 60 185 L 45 228" stroke="#1f1814" stroke-width="12" stroke-linecap="round" fill="none" />
+            <ellipse cx="40" cy="230" rx="10" ry="4" fill="#1f1814" />
+          </g>
+
+          <g id="t-torso-group">
+            <polygon class="t-dhoti" points="56,120 102,120 110,165 48,165" fill="#4d3829" />
+            <path class="t-torso" d="M 64 68 Q 84 60 100 68 L 102 128 Q 80 135 58 128 Z" fill="#291e17" />
+            <path id="t-scarf" class="t-scarf" d="M 62 70 Q 40 85 30 115 Q 18 135 15 160 Q 24 162 38 130 Q 55 105 70 76 Z" fill="#c48a43" />
+            <line x1="68" y1="68" x2="98" y2="128" stroke="#75512b" stroke-width="4" />
+            <ellipse cx="98" cy="130" rx="14" ry="10" fill="#54381b" />
+          </g>
+
+          <g id="t-leg-front" class="limb-leg-front">
+            <path d="M 88 135 L 98 185 L 112 228" stroke="#2b201a" stroke-width="13" stroke-linecap="round" fill="none" />
+            <ellipse cx="118" cy="230" rx="11" ry="4" fill="#2b201a" />
+          </g>
+
+          <g id="t-arm-front" class="limb-arm-front">
+            <path d="M 88 75 L 105 115 L 115 140" stroke="#2b201a" stroke-width="10" stroke-linecap="round" fill="none" />
+            <line id="t-staff" x1="114" y1="35" x2="118" y2="232" stroke="#8a6136" stroke-width="4.5" stroke-linecap="round" />
+            <circle cx="114" cy="35" r="4.5" fill="#d4af37" />
+          </g>
+
+          <g id="t-head" class="t-head" transform="translate(82, 42)">
+            <circle cx="0" cy="0" r="16" fill="#241a13" />
+            <path d="M -16 -4 Q 0 -22 18 -6 Q 14 8 -2 6 Z" fill="#9e6e3d" />
+            <ellipse cx="14" cy="2" rx="4" ry="7" fill="#c48a43" />
+          </g>
+        </g>
+      </svg>
+      <div class="traveler-tag">The Traveler</div>
+    </div>
+
+  </main>
+
+  <!-- ============================================================
+       CINEMATIC NARRATION OVERLAY
+       ============================================================ -->
+  <aside id="narrative-whisper" class="narrative-whisper" aria-live="polite">
+    <div id="whisper-text" class="whisper-text">A traveler approached a kingdom...</div>
+  </aside>
+
+  <!-- ============================================================
+       INTERACTION PROMPT (BOTTOM FLOATING HELP BAR)
+       ============================================================ -->
+  <footer class="interaction-prompt">
+    <div class="prompt-key">
+      <span class="key-badge">SCROLL</span>
+      <span class="prompt-or">or</span>
+      <span class="key-badge">DRAG</span>
+      <span class="prompt-or">or</span>
+      <span class="key-badge">← → ARROWS</span>
+      <span class="prompt-desc">to walk the journey</span>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       MILESTONE 5: THE MIRROR MATCH-CUT EXPERIENCE
+       ============================================================ -->
+  <section id="modal-mirror" class="modal-mirror hidden" aria-labelledby="mirror-title">
+    <div class="mirror-container">
+      
+      <div class="mirror-header">
+        <span class="mirror-eyebrow">THE REVELATION • இரு உலகங்களின் ஒருமை</span>
+        <h2 id="mirror-title" class="mirror-title">What protects the field... protects a kingdom.</h2>
+        <p class="mirror-sub">The same sacred principle across two distinct worlds.</p>
+      </div>
+
+      <!-- Split Screen Side-by-Side Comparison -->
+      <div class="mirror-split-view">
+        
+        <!-- Left: The Farmer Field -->
+        <div class="mirror-card card-field">
+          <div class="card-tag">THE FIELD (பைங்கூழ்)</div>
+          <div class="card-icon">
+            <svg viewBox="0 0 100 100" width="70" height="70">
+              <path d="M 50 90 Q 40 50 25 30 M 50 90 Q 50 40 50 20 M 50 90 Q 60 50 75 30" stroke="#4ade80" stroke-width="4" stroke-linecap="round" fill="none" />
+              <circle cx="50" cy="18" r="4" fill="#facc15" />
+            </svg>
+          </div>
+          <h3 class="card-title">The Farmer (உழவர்)</h3>
+          <ul class="analogy-list">
+            <li><span class="hl">The Crop:</span> Society that must grow</li>
+            <li><span class="hl">The Weed:</span> Destructive choking element</li>
+            <li><span class="hl">The Action:</span> Removing the weed with care</li>
+            <li><span class="hl">The Outcome:</span> The whole field flourishes</li>
+          </ul>
+        </div>
+
+        <div class="mirror-bridge">
+          <div class="bridge-glyph">நேர்</div>
+          <div class="bridge-label">IS EQUAL TO</div>
+        </div>
+
+        <!-- Right: The Sovereign Kingdom -->
+        <div class="mirror-card card-kingdom">
+          <div class="card-tag">THE REALM (வேந்தொறுத்தல்)</div>
+          <div class="card-icon">
+            <svg viewBox="0 0 100 100" width="70" height="70">
+              <polygon points="30,70 70,70 65,40 50,50 35,40" fill="#f59e0b" />
+              <polygon points="40,38 60,38 55,20 50,26 45,20" fill="#ef4444" />
+              <circle cx="50" cy="16" r="3" fill="#fbbf24" />
+            </svg>
+          </div>
+          <h3 class="card-title">The Ruler (வேந்து)</h3>
+          <ul class="analogy-list">
+            <li><span class="hl">Society:</span> The peaceful citizens</li>
+            <li><span class="hl">The Harmful:</span> Offenders threatening peace</li>
+            <li><span class="hl">The Action:</span> Escorting away the threat</li>
+            <li><span class="hl">The Outcome:</span> The kingdom breathes freely</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="mirror-footer">
+        <button id="btn-proceed-kural" class="btn-proceed-kural">
+          <span>DISCOVER THIRUKKURAL 550</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MILESTONE 6: FINAL CLIMAX — THIRUKKURAL 550 REVEAL
+       ============================================================ -->
+  <section id="modal-kural" class="modal-kural hidden" aria-labelledby="kural-header-title">
+    
+    <!-- Animated Scenic Background Image Layer (Farm & Kingdom at Sunrise) -->
+    <div class="kural-scenic-backdrop" aria-hidden="true">
+      <div class="scenic-img-wrapper">
+        <img src="kural_climax_bg.jpg" alt="" class="scenic-photo" />
+      </div>
+      <div class="scenic-gradient-overlay"></div>
+      <div class="scenic-sunbeam-aura"></div>
+      <canvas id="canvas-kural-embers" class="canvas-kural-embers"></canvas>
+    </div>
+
+    <!-- Main Climax Content Container -->
+    <div class="kural-climax-wrapper">
+      
+      <!-- Top Sacred Header & Chanting Action -->
+      <div class="kural-top-bar">
+        <div class="kural-number-badge">
+          <span class="kural-tag-num">குறள் 550 • THIRUKKURAL 550</span>
+          <span class="kural-tag-athikaram">அதிகாரம் 55: கொடுங்கோன்மை (On Tyranny / The Scepter of Justice)</span>
+        </div>
+        
+        <!-- Action Button: Audio Recitation -->
+        <button id="btn-chant-kural" class="btn-chant-kural" aria-label="Listen to Kural 550 Chanting">
+          <span class="chant-icon">🔊</span>
+          <span class="chant-label">குறள் ஓதுதல் • CHANT KURAL</span>
+          <span class="chant-waves">
+            <span class="c-bar"></span><span class="c-bar"></span><span class="c-bar"></span>
+          </span>
+        </button>
+      </div>
+
+      <!-- Sacred Tamil Typography with Radiant Gold Aurora -->
+      <div class="kural-couplet-block" id="kural-couplet-block">
+        <p class="kural-line line-1">
+          <span class="kural-word word-threat" data-word="threat" tabindex="0" role="button" title="Click: கொலையிற் கொடியாரை">கொலையிற் கொடியாரை</span>
+          <span class="kural-word word-king" data-word="king" tabindex="0" role="button" title="Click: வேந்தொறுத்தல்">வேந்தொறுத்தல்</span>
+        </p>
+        <p class="kural-line line-2">
+          <span class="kural-word word-crop" data-word="crop" tabindex="0" role="button" title="Click: பைங்கூழ் களைகட் டதனொடு">பைங்கூழ் களைகட் டதனொடு</span>
+          <span class="kural-word word-justice" data-word="equal" tabindex="0" role="button" title="Click: நேர்">நேர்.</span>
+        </p>
+      </div>
+
+      <!-- Metaphor Perspective Selector (Action Tabs) -->
+      <div class="metaphor-tabs" role="tablist" aria-label="Perspective lenses">
+        <button class="meta-tab active" data-perspective="unified" role="tab" aria-selected="true">
+          <span class="tab-icon">⚖️</span>
+          <span class="tab-title">The Unified Truth</span>
+          <span class="tab-sub">ஒருமை தத்துவம்</span>
+        </button>
+        <button class="meta-tab" data-perspective="farmer" role="tab" aria-selected="false">
+          <span class="tab-icon">🌾</span>
+          <span class="tab-title">The Farmer's Care</span>
+          <span class="tab-sub">உழவன் பார்வை</span>
+        </button>
+        <button class="meta-tab" data-perspective="ruler" role="tab" aria-selected="false">
+          <span class="tab-icon">👑</span>
+          <span class="tab-title">The Sovereign's Duty</span>
+          <span class="tab-sub">அரசன் கடமை</span>
+        </button>
+      </div>
+
+      <!-- Dynamic Philosophical Commentary Box -->
+      <div id="commentary-display" class="commentary-card">
+        <div class="commentary-header">
+          <span id="commentary-eyebrow" class="comm-eyebrow">THE CORE METAPHOR • மையக் கருத்து</span>
+          <div class="scholar-pills">
+            <button class="scholar-pill active" data-scholar="core">Essence</button>
+            <button class="scholar-pill" data-scholar="muva">மு. வரதராசனார்</button>
+            <button class="scholar-pill" data-scholar="pappaiah">சாலமன் பாப்பையா</button>
+            <button class="scholar-pill" data-scholar="pope">Rev. G.U. Pope</button>
+          </div>
+        </div>
+        <p id="commentary-body" class="comm-body">
+          “For a ruler to remove and punish those who inflict grievous harm upon society is precisely comparable to a farmer uprooting parasitic weeds so that the green, flourishing crops may live.”
+        </p>
+        <div class="comm-footer">
+          <span class="comm-highlight">Protect the whole by excising what destroys it.</span>
+          <span class="comm-detail">Justice is not vengeance; it is the ultimate agrarian responsibility of life-giving care.</span>
+        </div>
+      </div>
+
+      <!-- Colorful Interactive Word-by-Word Matrix -->
+      <!-- Universal Systems Parallels Action Accordion -->
+      <div class="modern-parallels-drawer" id="modern-parallels-drawer">
+        <button id="btn-toggle-parallels" class="btn-toggle-parallels" aria-expanded="false">
+          <span class="p-pulse">✨</span>
+          <span class="p-title">EXPLORE 4 UNIVERSAL MODERN PARALLELS • நவீன உலகப் பயன்பாடு</span>
+          <span class="p-arrow">▼</span>
+        </button>
+        <div id="parallels-grid" class="parallels-grid hidden">
+          <div class="p-card card-agri">
+            <div class="p-head"><span class="p-glyph">🌾</span><span class="p-name">Agriculture</span></div>
+            <div class="p-desc">Weeding parasitic tares protects the harvest so millions may be fed with abundance.</div>
+          </div>
+          <div class="p-card card-gov">
+            <div class="p-head"><span class="p-glyph">🏛️</span><span class="p-name">Civic Law</span></div>
+            <div class="p-desc">Excising violent predators is not vengeance—it is the moral shield defending peaceful families.</div>
+          </div>
+          <div class="p-card card-med">
+            <div class="p-head"><span class="p-glyph">🩺</span><span class="p-name">Medicine</span></div>
+            <div class="p-desc">Surgical excision of malignant tumors preserves the health of the entire human body.</div>
+          </div>
+          <div class="p-card card-tech">
+            <div class="p-head"><span class="p-glyph">🛡️</span><span class="p-name">Cybersecurity</span></div>
+            <div class="p-desc">Isolating malware and malicious exploits maintains the integrity of the living global network.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="kural-breakdown-row" aria-label="Click words to explore meaning">
+        
+        <!-- Word 1: Ruler Excising -->
+        <div class="break-cell cell-king" data-word="king" tabindex="0" role="button" title="Click to spotlight meaning">
+          <div class="cell-top">
+            <span class="cell-glyph">👑</span>
+            <span class="cell-tamil">வேந்தொறுத்தல்</span>
+          </div>
+          <span class="cell-eng">The Ruler Removing Harm</span>
+          <span class="cell-hint">Sovereign responsibility of protection</span>
+        </div>
+
+        <!-- Word 2: Dangerous Offenders -->
+        <div class="break-cell cell-threat" data-word="threat" tabindex="0" role="button" title="Click to spotlight meaning">
+          <div class="cell-top">
+            <span class="cell-glyph">⚔️</span>
+            <span class="cell-tamil">கொலையிற் கொடியாரை</span>
+          </div>
+          <span class="cell-eng">Those Inflicting Severe Harm</span>
+          <span class="cell-hint">Elements that devour peace & life</span>
+        </div>
+
+        <!-- Word 3: Tender Crops & Weeding -->
+        <div class="break-cell cell-crop" data-word="crop" tabindex="0" role="button" title="Click to spotlight meaning">
+          <div class="cell-top">
+            <span class="cell-glyph">🌾</span>
+            <span class="cell-tamil">பைங்கூழ் களைகட்டதனொடு</span>
+          </div>
+          <span class="cell-eng">Weeding Young Green Crops</span>
+          <span class="cell-hint">Uprooting the strangler to save food</span>
+        </div>
+
+        <!-- Word 4: Equal in Virtue -->
+        <div class="break-cell cell-justice" data-word="equal" tabindex="0" role="button" title="Click to spotlight meaning">
+          <div class="cell-top">
+            <span class="cell-glyph">⚖️</span>
+            <span class="cell-tamil">நேர்</span>
+          </div>
+          <span class="cell-eng">Identical in Sacred Virtue</span>
+          <span class="cell-hint">Cosmic equivalence of civic & natural law</span>
+        </div>
+
+      </div>
+
+      <!-- Replay & Explore Action Row -->
+      <div class="kural-actions">
+        <button id="btn-replay" class="kural-action-btn btn-replay">
+          <span class="btn-icon">↺</span>
+          <span>REPLAY THE JOURNEY</span>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
